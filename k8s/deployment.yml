@@ -13,6 +13,10 @@ spec:
       labels:
         app: vacation-api
     spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox
+          command: ['sh', '-c', 'until nc -z mysql 3306; do echo waiting for mysql; sleep 2; done']
       containers:
         - name: vacation-api
           image: ghcr.io/1000bang/vacation_api:latest
