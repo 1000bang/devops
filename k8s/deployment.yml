@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vacation-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vacation-api
+  template:
+    metadata:
+      labels:
+        app: vacation-api
+    spec:
+      containers:
+        - name: vacation-api
+          image: ghcr.io/1000bang/vacation_api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vacation-api-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vacation-api-secret
+                  key: DB_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: vacation-api-secret
+                  key: JWT_SECRET
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PASSWORD
+              value: ""
