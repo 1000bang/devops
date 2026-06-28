@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vacation-web
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vacation-web
+  template:
+    metadata:
+      labels:
+        app: vacation-web
+    spec:
+      containers:
+        - name: vacation-web
+          image: ghcr.io/1000bang/vacation_web:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vacation-web-svc
+  namespace: default
+spec:
+  selector:
+    app: vacation-web
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
