@@ -36,6 +36,13 @@ spec:
                 secretKeyRef:
                   name: vacation-api-secret
                   key: DB_PASSWORD
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "50m"
+            limits:
+              memory: "768Mi"
+              cpu: "500m"
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
